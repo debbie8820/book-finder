@@ -14,3 +14,9 @@ app.set('view engine', 'hbs')
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+require('./routes')(app)
+
+app.use((err, req, res) => {
+  return res.status(500).json({ Error: String(err) })
+})
