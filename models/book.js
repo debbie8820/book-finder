@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Book.hasMany(models.Like)
-      Book.belongsTo(models.Category)
       Book.belongsTo(models.Store)
     }
   };
@@ -19,12 +18,11 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     url: DataTypes.STRING,
     img: DataTypes.STRING,
+    discount: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
-    ISBN: DataTypes.STRING,
     author: DataTypes.STRING,
     productNumber: DataTypes.STRING,
     stock: DataTypes.INTEGER,
-    CategoryId: DataTypes.INTEGER,
     StoreId: DataTypes.STRING
   }, {
     sequelize,

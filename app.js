@@ -17,6 +17,6 @@ app.listen(port, () => {
 
 require('./routes')(app)
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   return res.status(500).json({ Error: String(err) })
 })

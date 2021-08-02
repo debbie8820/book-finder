@@ -17,27 +17,21 @@ module.exports = {
       img: {
         type: Sequelize.STRING
       },
-      price: {
+      discount: {
         type: Sequelize.INTEGER
       },
-      ISBN: {
-        type: Sequelize.STRING
+      price: {
+        type: Sequelize.INTEGER
       },
       author: {
         type: Sequelize.STRING
       },
       productNumber: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       stock: {
         type: Sequelize.INTEGER
-      },
-      CategoryId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Categories',
-          key: 'id'
-        }
       },
       StoreId: {
         allowNull: false,
