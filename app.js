@@ -8,6 +8,7 @@ if (process.env.NODE_ENV !== "production") {
 const port = process.env.PORT || 3000
 const app = express()
 
+app.use(express.static('public/img'))
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 

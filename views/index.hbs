@@ -1,0 +1,37 @@
+<div class="banner" style="position:relative; width:100%; height:100%; color:white; text-align:center">
+  <img style="max-width:100%;height:50%;" src="book3.jpg" alt="books">
+  <div class="search-bar" style="position:absolute; top:50%;left:50%;transform:translate(-50%,-50%);width:100%;">
+    <div style="width:100%;">
+      <h1 class="font-italic font-weight-light">BookFinder</h1>
+      <div class="d-flex justify-content-center">
+        <form action="/books" class="d-flex my-2 my-lg-0">
+          <input class="form-control mr-sm-2 w-70" style="width:50vw;" name="keyword" type="text"
+            placeholder="Search books..." aria-label="Search">
+          <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  {{#each restaurants}}
+  <div class="col-md-4">
+    <div class="card mb-4 shadow-sm">
+      <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="286px" height="180px">
+      <div class="card-body">
+        <p class="card-text">
+          <a href="/restaurants/{{this.id}}">
+            {{this.name}}
+          </a>
+        </p>
+        <span class="badge badge-secondary">{{this.categoryName}}</span>
+        <p class="card-text">{{this.description}}</p>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>
+<br />
+<br />
