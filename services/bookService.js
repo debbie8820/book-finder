@@ -5,12 +5,14 @@ const PAGE_LIMIT = 20
 
 
 const bookService = {
-  searchBooks: async (keyword, pageNum) => { //查找資料庫
+  searchBooks: async (keyword, pageNum, ordering) => { //查找資料庫
     try {
       let offset = 0
+      const order = require('../config/order').order(ordering)
       if (pageNum) {
-        offset = (page - 1) * PAGE_LIMIT
+        offset = (Number(pageNum) - 1) * PAGE_LIMIT
       }
+
       const whereQuery = {
         [Op.or]: [
           { name: { [Op.like]: `%${keyword}%` } },
@@ -23,6 +25,9 @@ const bookService = {
         where: whereQuery,
         offset,
         limit: PAGE_LIMIT,
+        order,
+        raw: true,
+        nest: true
       })
 
       const page = Number(pageNum) || 1
@@ -34,11 +39,11 @@ const bookService = {
       const next = page + 1 < pages ? page + 1 : pages
 
       if (books.rows.length) {
-        const result = Object.assign(books, { page, pages, totalPages, pre, next })
+        const result = Object.assign(books, { keyword, ordering, page, pages, totalPages, pre, next })
         return result
       }
 
-      const result = await bookService.scrapeBooks(keyword)
+      const result = await bookService.scrapeBooks(keyword, ordering)
       return result
     }
     catch (err) {
@@ -46,12 +51,13 @@ const bookService = {
     }
   },
 
-  scrapeBooks: async (keyword) => { //爬蟲
+  scrapeBooks: async (keyword, ordering) => { //爬蟲
     try {
       let result = []
 
       //博客來
-      const BOOK_URL = `https://search.books.com.tw/search/query/cat/1/sort/1/v/0/page/1/spell/3/ms2/ms2_1/key/${keyword}`
+      const BOOK_ORDER = require('../config/order').BOOK_ORDER(ordering)
+      const BOOK_URL = `https://search.books.com.tw/search/query/cat/${BOOK_ORDER}/sort/1/v/0/page/1/spell/3/ms2/ms2_1/key/${keyword}`
       const BOOK_encoded = encodeURI(BOOK_URL)
       const BOOK_body = await require('../utils/getUrl')(BOOK_encoded)
       const BOOK$ = cheerio.load(BOOK_body)
@@ -86,7 +92,8 @@ const bookService = {
 
 
       //蝦皮書城
-      const SHOPEE_URL = `https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=0&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`
+      const SHOPEE_ORDER = require('../config/order').SHOPEE_ORDER(ordering)
+      const SHOPEE_URL = `https://shopee.tw/api/v4/search/search_items?by=${SHOPEE_ORDER[0]}&keyword=${keyword}&label_ids=1000075&limit=60&newest=0&order=${SHOPEE_ORDER[1]}&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`
       const SHOPEE_encoded = encodeURI(SHOPEE_URL)
       const SHOPEE_body = await require('../utils/getUrl')(SHOPEE_encoded)
       const SHOPEE$ = JSON.parse(SHOPEE_body).items
@@ -106,7 +113,8 @@ const bookService = {
       }
 
       //城邦書店
-      const CITE_URL = `https://www.cite.com.tw/search_result?keywords=${keyword}`
+      const CITE_ORDER = require('../config/order').CITE_ORDER(ordering)
+      const CITE_URL = `https://www.cite.com.tw/search_result?keywords=${keyword}&sort=${CITE_ORDER}`
       const CITE_encoded = encodeURI(CITE_URL)
       const CITE_body = await require('../utils/getUrl')(CITE_encoded)
       const CITE$ = cheerio.load(CITE_body)
@@ -145,7 +153,7 @@ const bookService = {
       if (pages > 1) {
         result = result.slice(0, 20)
       }
-      const books = Object.assign({ rows: result }, { page, pages, totalPages, pre, next })
+      const books = Object.assign({ rows: result }, { keyword, ordering, page, pages, totalPages, pre, next })
       return books
     }
     catch (err) {
