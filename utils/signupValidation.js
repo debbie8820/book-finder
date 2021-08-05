@@ -7,6 +7,10 @@ module.exports = async (signupForm) => {
     errors.push({ message: 'Please fill in all the fields.' })
   }
 
+  if (name.length > 15) {
+    errors.push({ message: 'The maximum length of names is 15 characters.' })
+  }
+
   if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
     errors.push({ message: 'Invalid email' })
   }
