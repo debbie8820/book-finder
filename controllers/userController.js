@@ -40,7 +40,8 @@ const userController = {
   },
 
   logout: (req, res, next) => {
-
+    res.clearCookie('token')
+    return res.redirect('back')
   }
 }
 

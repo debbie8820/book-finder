@@ -25,15 +25,16 @@
           </div>
         </a>
         {{#if isAuthenticated}}
-        <div>
-          <h6 class="text-light">你好{{user.name}}，歡迎來到BookFinder!</h6>
+        <div style="vertical-align: middle">
+          <h6 class="text-light align-middle mb-0">你好{{user.name}}，歡迎來到BookFinder!</h6>
         </div>
         {{/if}}
-        <div class='d-flex'>
+        <div class='d-flex ml-1'>
           {{#if isAuthenticated}}
-          <a href="/users/logout" class="align-middle mb-0 text-decoration-none m-0 ml-1 text-light">
-            <h6 class="mr-2"><b>登出</b></h6>
-          </a>
+          <form action="/logout" method="POST">
+            <button type="submit"
+              class="btn btn-dark align-middle mb-0 text-decoration-none m-0 ml-1 text-light p-0"><b>登出</b></button>
+          </form>
           {{else}}
           <a href="/signup" class="align-middle mb-0 text-decoration-none m-0 text-light">
             <h6 class="mr-2"><b>註冊</b></h6>

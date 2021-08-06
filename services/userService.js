@@ -13,10 +13,6 @@ const userService = {
       expiresIn: 86400000
     })
     return token
-  },
-
-  logout: () => {
-
   }
 }
 
