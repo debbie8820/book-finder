@@ -1,0 +1,22 @@
+<div class="row mt-5">
+  <div class="col-md-6 m-auto">
+    <div class="card card-body">
+      <h1 class="text-center m-3">Login</h1>
+      {{> message}}
+      <form action="/signin" method="POST">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input class="form-control" type="text" id="email" name="email" placeholder="Enter Email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input class="form-control" type="password" id="password" name="password" placeholder="Enter Password">
+        </div>
+        <input type="submit" class="btn btn-warning btn-block text-white" value="Login">
+      </form>
+      <p class="lead mt-3">
+        No account? <a class="text-decoration-none" href="/signup">Register</a>
+      </p>
+    </div>
+  </div>
+</div>

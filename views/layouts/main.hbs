@@ -21,17 +21,29 @@
         <a class="border-0 mr-3 text-decoration-none" href="">
           <div class="d-flex" style="color:rgb(202, 68, 68);">
             <i class="fal fa-shopping-cart fa-lg mr-2"></i>
-            <h6 class="align-bottom">0{{user.totalLikes}}</h6>
+            <h6 class="align-bottom">{{user.LikeBooks.length}}</h6>
           </div>
         </a>
+        {{#if isAuthenticated}}
         <div>
-          <a href="" class="align-middle mb-0 text-decoration-none m-0 text-light">
-            <h6 class="mr-2"><b>註冊/登入</b></h6>
+          <h6 class="text-light">你好{{user.name}}，歡迎來到BookFinder!</h6>
+        </div>
+        {{/if}}
+        <div class='d-flex'>
+          {{#if isAuthenticated}}
+          <a href="/users/logout" class="align-middle mb-0 text-decoration-none m-0 ml-1 text-light">
+            <h6 class="mr-2"><b>登出</b></h6>
           </a>
+          {{else}}
+          <a href="/signup" class="align-middle mb-0 text-decoration-none m-0 text-light">
+            <h6 class="mr-2"><b>註冊</b></h6>
+          </a>
+          <a href="/signin" class="align-middle mb-0 text-decoration-none m-0 text-light">
+            <h6 class="mr-2"><b>登入</b></h6>
+          </a>
+          {{/if}}
         </div>
-        <div>
-          <h6 class="text-light">你好debbie，歡迎來到BookFinder!</h6>
-        </div>
+
       </div>
 
     </div>

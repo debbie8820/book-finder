@@ -8,7 +8,7 @@ router.post('/signup', userController.signup)
 
 router.get('/signin', (req, res, next) => { return res.render('signin') })
 
-router.post('/signup', userController.signin)
+router.post('/signin', userController.signin)
 
 router.get('/', (req, res, next) => { return res.render('index') })
 

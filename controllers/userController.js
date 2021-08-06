@@ -1,5 +1,6 @@
 const userService = require('../services/userService')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const userController = {
   signup: async (req, res, next) => {
@@ -19,8 +20,23 @@ const userController = {
     }
   },
 
-  signin: (req, res, next) => {
+  signin: async (req, res, next) => {
+    try {
+      const { email, password } = req.body
 
+      const data = await require('../utils/signinValidation')(email, password)
+      if (data.errors.length) {
+        return res.render('signin', { errors, email, password })
+      }
+
+      const token = await userService.signin(data.user)
+
+      res.cookie('token', token, { maxAge: 86400000, httpOnly: true, secure: true })
+      return res.redirect('/')
+    }
+    catch (err) {
+      next(err)
+    }
   },
 
   logout: (req, res, next) => {
