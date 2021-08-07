@@ -7,8 +7,10 @@ const bookController = {
       const data = await bookService.searchBooks(req.query.keyword, req.query.pageNum, req.query.order, UserId)
 
       if (!data.rows.length) {
-        console.log('查無此書！')
+        const errors = [{ message: `抱歉，找不到您所查詢${req.query.keyword}的相關資料` }]
+        return res.render('books', { errors })
       }
+
       return res.render('books', { books: data.rows, keyword: data.keyword, order: data.ordering, page: data.page, pages: data.pages, totalPages: data.totalPages, pre: data.pre, next: data.next })
     }
     catch (err) {

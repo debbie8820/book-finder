@@ -13,9 +13,13 @@
     </div>
     <button type="submit" class="btn btn-success text-white" style="height: 38px;"><b>搜尋</b></button>
   </div>
-
 </form>
 
+<div class="w-100 d-flex justify-content-center">
+  {{>message}}
+</div>
+
+{{#if books.length}}
 <div class="px-5">
   <div class="row pt-1 pb-3 px-5">
     {{#each books}}
@@ -91,3 +95,4 @@
     </ul>
   </nav>
 </div>
+{{/if}}

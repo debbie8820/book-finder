@@ -41,8 +41,11 @@ const bookService = {
         return result
       }
 
-      const result = await bookService.scrapeBooks(keyword, ordering)
-      return result
+      const bookExists = await bookService.scrapeBooks(keyword, ordering)
+      if (bookExists) {
+        return bookService.searchBooks(keyword, pageNum, ordering, UserId)
+      }
+      return books
     }
     catch (err) {
       throw err
@@ -51,7 +54,7 @@ const bookService = {
 
   scrapeBooks: async (keyword, ordering) => { //爬蟲
     try {
-      let result = []
+      const result = []
 
       //博客來
       const BOOK_ORDER = require('../config/order').BOOK_ORDER(ordering)
@@ -141,18 +144,12 @@ const bookService = {
 
       }
 
-      Book.bulkCreate(result, { updateOnDuplicate: ['discount', 'price'] })
-
-      const page = 1
-      const pages = Math.ceil(result.length / PAGE_LIMIT)
-      const totalPages = Array.from({ length: pages }).map((d, i) => { return i + 1 })
-      const pre = 1
-      const next = page + 1 > pages ? pages : page + 1
-      if (pages > 1) {
-        result = result.slice(0, 20)
+      if (result.length) {
+        await Book.bulkCreate(result, { updateOnDuplicate: ['discount', 'price'] })
+        return true
       }
-      const books = Object.assign({ rows: result }, { keyword, ordering, page, pages, totalPages, pre, next })
-      return books
+
+      return false
     }
     catch (err) {
       throw err
