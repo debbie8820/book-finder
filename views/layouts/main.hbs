@@ -21,7 +21,7 @@
         <a class="border-0 mr-3 text-decoration-none" href="">
           <div class="d-flex" style="color:rgb(202, 68, 68);">
             <i class="fal fa-shopping-cart fa-lg mr-2"></i>
-            <h6 class="align-bottom">{{user.LikeBooks.length}}</h6>
+            <h6 class="align-bottom">{{#if user}}{{user.LikedBooks.length}}{{else}}0{{/if}}</h6>
           </div>
         </a>
         {{#if isAuthenticated}}

@@ -3,6 +3,14 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const userController = {
+  getHomePage: (req, res, next) => {
+    return res.render('index')
+  },
+
+  getSignupPage: (req, res, next) => {
+    return res.render('signup')
+  },
+
   signup: async (req, res, next) => {
     try {
       const { name, email, password, birthday, gender } = req.body
@@ -20,18 +28,26 @@ const userController = {
     }
   },
 
+  getSigninPage: (req, res, next) => {
+    return res.render('signin', { referer: req.headers.referer })
+  },
+
   signin: async (req, res, next) => {
     try {
-      const { email, password } = req.body
+      const { email, password, referer } = req.body
 
       const data = await require('../utils/signinValidation')(email, password)
       if (data.errors.length) {
-        return res.render('signin', { errors, email, password })
+        return res.render('signin', { errors: data.errors, email, password, referer })
       }
 
       const token = await userService.signin(data.user)
 
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true, secure: true })
+
+      if (referer && referer !== 'undefined' && referer.slice(-7) !== '/signin') {
+        return res.redirect(referer)
+      }
       return res.redirect('/')
     }
     catch (err) {
@@ -41,7 +57,7 @@ const userController = {
 
   logout: (req, res, next) => {
     res.clearCookie('token')
-    return res.redirect('back')
+    return res.redirect('/')
   }
 }
 

@@ -18,7 +18,7 @@ module.exports = async (email, password) => {
 
   const isMatch = bcrypt.compareSync(password, user.password)
   if (!isMatch) {
-    errors.push({ message: 'Incorrect password' })
+    data.errors.push({ message: 'Incorrect password' })
     return data
   }
 

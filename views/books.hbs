@@ -1,4 +1,4 @@
-<form action="/books" class="form p-2" style="display:inline;">
+<form action="/searchBooks" class="form p-2" style="display:inline;">
   <div class="form-row d-flex justify-content-center">
     <div class="form-group mt-0" style="width: 40vw;border:2px solid rgb(12, 158, 49);border-radius:.25rem;">
       <input type="text" name='keyword' class="form-control" placeholder="請輸入關鍵字" value="{{keyword}}">
@@ -40,7 +40,17 @@
             <h4 class="card-text">${{this.price}}</h4>
           </div>
           <div class="d-flex justify-content-between">
-            <a href="" style="color:red"><i class="far fa-heart fa-lg"></i></a>
+            {{#if this.isLiked}}
+            <form action="/books/{{this.id}}/unlike" method="POST" style="display:inline">
+              <button type="submit" style="color:red;background-color:white; none;border:none;"><i
+                  class="fas fa-heart fa-lg"></i></button>
+            </form>
+            {{else}}
+            <form action="/books/{{this.id}}/like" method="POST" style="display:inline">
+              <button type="submit" style="color:red;background-color:white; none;border:none;"><i
+                  class="far fa-heart fa-lg"></i></button>
+            </form>
+            {{/if}}
             {{#unless this.stock}}<h6><span class="mx-1" style="color:rgb(248, 112, 88)">缺貨中</span></h6>{{/unless}}
             <h6 class="pr-2 mb-0" style="color:rgb(82, 82, 82);">{{this.Store.name}}</h6>
           </div>
@@ -55,7 +65,7 @@
   <nav aria-label="Page navigation example">
     <ul class="pagination">
       <li class="page-item">
-        <a class="page-link" href="/books?keyword={{keyword}}&pageNum={{pre}}&order={{../../order}}"
+        <a class="page-link" href="/searchBooks?keyword={{keyword}}&pageNum={{pre}}&order={{../../order}}"
           aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
         </a>
@@ -64,16 +74,17 @@
       {{#ifCond this ../page}}
       <li class="page-item active">
         <a class="page-link"
-          href="/books?keyword={{../../keyword}}&pageNum={{../this}}&order={{../../order}}">{{../this}}</a>
+          href="/searchBooks?keyword={{../../keyword}}&pageNum={{../this}}&order={{../../order}}">{{../this}}</a>
       </li>
       {{else}}
       <li class="page-item"><a class="page-link"
-          href="/books?keyword={{../../keyword}}&pageNum={{../this}}&order={{../../order}}">{{../this}}</a>
+          href="/searchBooks?keyword={{../../keyword}}&pageNum={{../this}}&order={{../../order}}">{{../this}}</a>
       </li>
       {{/ifCond}}
       {{/each}}
       <li class="page-item">
-        <a class="page-link" href="/books?keyword={{keyword}}&pageNum={{next}}&order={{../../order}}" aria-label="Next">
+        <a class="page-link" href="/searchBooks?keyword={{keyword}}&pageNum={{next}}&order={{../../order}}"
+          aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>

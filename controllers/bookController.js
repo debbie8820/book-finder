@@ -3,7 +3,8 @@ const bookService = require('../services/bookService')
 const bookController = {
   searchBooks: async (req, res, next) => {
     try {
-      const data = await bookService.searchBooks(req.query.keyword, req.query.pageNum, req.query.order)
+      const UserId = req.user ? req.user.id : 0
+      const data = await bookService.searchBooks(req.query.keyword, req.query.pageNum, req.query.order, UserId)
 
       if (!data.rows.length) {
         console.log('查無此書！')
@@ -12,6 +13,26 @@ const bookController = {
     }
     catch (err) {
       return next(err)
+    }
+  },
+
+  likeBooks: async (req, res, next) => {
+    try {
+      await bookService.likeBooks(req.user.id, req.params.BookId)
+      return res.redirect('back')
+    }
+    catch (err) {
+      next(err)
+    }
+  },
+
+  unlikeBooks: async (req, res, next) => {
+    try {
+      await bookService.unlikeBooks(req.user.id, req.params.BookId)
+      return res.redirect('back')
+    }
+    catch (err) {
+      next(err)
     }
   }
 }

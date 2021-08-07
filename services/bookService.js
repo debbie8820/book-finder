@@ -1,11 +1,12 @@
 const cheerio = require('cheerio')
-const { Book, Store } = require('../models')
+const { Book, Store, Like } = require('../models')
 const { Op } = require('sequelize')
 const PAGE_LIMIT = 20
+const Sequelize = require('sequelize')
 
 
 const bookService = {
-  searchBooks: async (keyword, pageNum, ordering) => { //查找資料庫
+  searchBooks: async (keyword, pageNum, ordering, UserId) => { //查找資料庫
     try {
       let offset = 0
       const order = require('../config/order').order(ordering)
@@ -21,13 +22,16 @@ const bookService = {
       }
 
       const books = await Book.findAndCountAll({
-        include: Store,
+        include: [{ model: Store }],
         where: whereQuery,
         offset,
         limit: PAGE_LIMIT,
         order,
         raw: true,
-        nest: true
+        nest: true,
+        attributes: ['name', 'url', 'img', 'author', 'stock', 'StoreId', 'discount', 'price', 'author', 'id',
+          [Sequelize.literal(`(SELECT EXISTS (SELECT * FROM Likes WHERE UserId = ${UserId} AND BookId = Book.id))`), 'isLiked']
+        ]
       })
 
       const page = Number(pageNum) || 1
@@ -158,6 +162,17 @@ const bookService = {
     }
     catch (err) {
       throw err
+    }
+  },
+
+  likeBooks: async (UserId, BookId) => {
+    await Like.findOrCreate({ where: { UserId, BookId } })
+  },
+
+  unlikeBooks: async (UserId, BookId) => {
+    const like = await Like.findOne({ where: { UserId, BookId } })
+    if (like) {
+      await like.destroy()
     }
   }
 }

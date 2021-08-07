@@ -20,7 +20,7 @@ passport.use(new JwtStrategy(options, async (payload, done) => {
   try {
     const user = await User.findByPk(payload.id, {
       include: [
-        { model: Book, as: 'LikedBooks' }
+        { model: Book, as: 'LikedBooks', attributes: ['id'] }
       ]
     })
     if (user) {
