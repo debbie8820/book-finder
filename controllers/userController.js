@@ -58,6 +58,17 @@ const userController = {
   logout: (req, res, next) => {
     res.clearCookie('token')
     return res.redirect('/')
+  },
+
+  getLikedBooks: async (req, res, next) => {
+    try {
+      const bookIds = req.user.LikedBooks.map((e) => { return e.id })
+      const likedBooks = await userService.getLikedBooks(bookIds, req.query.pageNum)
+      return res.render('like', { books: likedBooks.rows, pages: likedBooks.pages, pages: likedBooks.pages, totalPages: likedBooks.totalPages, pre: likedBooks.pre, next: likedBooks.next })
+    }
+    catch (err) {
+      next(err)
+    }
   }
 }
 

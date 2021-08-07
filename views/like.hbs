@@ -1,0 +1,64 @@
+<div class="px-5">
+  <div class="row pt-1 pb-3 px-5">
+    {{#each books}}
+    <div class="col-md-2 p-1">
+      <div class="card mb-2 shadow-sm d-flex flex-direction:column align-items-center">
+        <div style="width:160px;height:160px">
+          <a href="{{this.url}}" class="text-decoration-none mt-2">
+            <img class="card-img-top mt-2" src="{{this.img}}" alt="bookImg" style="width:160px;height:160px">
+          </a>
+        </div>
+        <div class="card-body p-2">
+          <a href="{{this.url}}" class="text-decoration-none">
+            <h6 class="mt-2"
+              style="width:100%;height:2rem;line-height:1rem;text-overflow:ellipsis;overflow:hidden;font-size:0.9rem;">
+              {{this.name}}</h6>
+          </a>
+          <h6 class="p-0 mb-1" style="height:1rem; font-size:0.9rem;">{{this.author}}</h6>
+          <div class="d-flex mb-1">
+            {{#if discount}}
+            <h4><span class="badge badge-danger mr-2">{{this.discount}}折</span></h4>
+            {{/if}}
+            <h4 class="card-text">${{this.price}}</h4>
+          </div>
+          <div class="d-flex justify-content-between">
+            <form action="/books/{{this.id}}/unlike" method="POST" style="display:inline">
+              <button type="submit" style="color:red;background-color:white; none;border:none;"><i
+                  class="fas fa-heart fa-lg"></i></button>
+            </form>
+            {{#unless this.stock}}<h6><span class="mx-1" style="color:rgb(248, 112, 88)">缺貨中</span></h6>{{/unless}}
+            <h6 class="pr-2 mb-0" style="color:rgb(82, 82, 82);">{{this.Store.name}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+<div class="d-flex justify-content-center">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="/users/likes?pageNum={{pre}}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {{#each totalPages}}
+      {{#ifCond this ../page}}
+      <li class="page-item active">
+        <a class="page-link" href="/users/likes?pageNum={{../this}}">{{../this}}</a>
+      </li>
+      {{else}}
+      <li class="page-item"><a class="page-link" href="/users/likes?pageNum={{../this}}">{{../this}}</a>
+      </li>
+      {{/ifCond}}
+      {{/each}}
+      <li class="page-item">
+        <a class="page-link" href="/users/likes?pageNum={{next}}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
