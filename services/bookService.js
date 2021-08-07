@@ -34,13 +34,7 @@ const bookService = {
         ]
       })
 
-      const page = Number(pageNum) || 1
-      const pages = Math.ceil(books.count / PAGE_LIMIT)
-      const totalPages = Array.from({ length: pages }).map((d, i) => {
-        return i + 1
-      })
-      const pre = page - 1 > 1 ? page - 1 : 1
-      const next = page + 1 < pages ? page + 1 : pages
+      const { page, pages, totalPages, pre, next } = require('../utils/pagination')(PAGE_LIMIT, books.count, pageNum)
 
       if (books.rows.length) {
         const result = Object.assign(books, { keyword, ordering, page, pages, totalPages, pre, next })
@@ -166,13 +160,23 @@ const bookService = {
   },
 
   likeBooks: async (UserId, BookId) => {
-    await Like.findOrCreate({ where: { UserId, BookId } })
+    try {
+      await Like.findOrCreate({ where: { UserId, BookId } })
+    }
+    catch (err) {
+      throw err
+    }
   },
 
   unlikeBooks: async (UserId, BookId) => {
-    const like = await Like.findOne({ where: { UserId, BookId } })
-    if (like) {
-      await like.destroy()
+    try {
+      const like = await Like.findOne({ where: { UserId, BookId } })
+      if (like) {
+        await like.destroy()
+      }
+    }
+    catch (err) {
+      throw err
     }
   }
 }

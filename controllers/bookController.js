@@ -12,7 +12,7 @@ const bookController = {
       return res.render('books', { books: data.rows, keyword: data.keyword, order: data.ordering, page: data.page, pages: data.pages, totalPages: data.totalPages, pre: data.pre, next: data.next })
     }
     catch (err) {
-      return next(err)
+      next(err)
     }
   },
 

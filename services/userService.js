@@ -38,7 +38,7 @@ const userService = {
       return books
     }
     catch (err) {
-      return err
+      throw err
     }
   }
 }
