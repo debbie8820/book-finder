@@ -1,6 +1,11 @@
 const bookService = require('../services/bookService')
 
 const bookController = {
+  storeKeyword: (req, res, next) => {
+    bookService.storeKeyword(req.query.keyword)
+    next()
+  },
+
   searchBooks: async (req, res, next) => {
     try {
       const UserId = req.user ? req.user.id : 0

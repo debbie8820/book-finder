@@ -1,5 +1,5 @@
 const cheerio = require('cheerio')
-const { Book, Store, Like } = require('../models')
+const { Book, Store, Like, Keyword } = require('../models')
 const { Op } = require('sequelize')
 const PAGE_LIMIT = 20
 const Sequelize = require('sequelize')
@@ -8,6 +8,10 @@ const scrapeBooksBOOK = require('../config/scrapeBooksBOOK')
 const scrapeBooksSHOPEE = require('../config/scrapeBooksSHOPEE')
 
 const bookService = {
+  storeKeyword: (keyword) => {
+    Keyword.findOrCreate({ where: { keyword } })
+  },
+
   searchBooks: async (keyword, pageNum, ordering, UserId) => {
     try {
       let offset = 0
