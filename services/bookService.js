@@ -10,7 +10,6 @@ const scrapeBooksSHOPEE = require('../config/scrapeBooksSHOPEE')
 const bookService = {
   searchBooks: async (keyword, pageNum, ordering, UserId) => {
     try {
-      return bookService.scrapeBooks(keyword)
       let offset = 0
       const order = require('../config/order').order(ordering)
       if (pageNum) {
