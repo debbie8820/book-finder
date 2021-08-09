@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       productNumber: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(190),
         unique: true
       },
       stock: {
