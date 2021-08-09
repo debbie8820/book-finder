@@ -1,4 +1,3 @@
-const cheerio = require('cheerio')
 const { Book, Store, Like, Keyword } = require('../models')
 const { Op } = require('sequelize')
 const PAGE_LIMIT = 20
@@ -61,32 +60,46 @@ const bookService = {
   scrapeBooks: async (keyword) => {
     try {
       const result = []
+      const promises = []
 
-      //博客來
+      // //博客來
       const booksBook = await scrapeBooksBOOK(`https://search.books.com.tw/search/query/cat/1/sort/1/v/0/page/1/spell/3/ms2/ms2_1/key/${keyword}`, keyword)
 
       if (booksBook.books.length) {
         result.push(...booksBook.books)
       }
 
-      // //蝦皮書城
+      //蝦皮書城
       const booksShopee = await scrapeBooksSHOPEE(`https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=0&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`)
 
       if (booksShopee.books.length) {
         result.push(...booksShopee.books)
       }
 
-      const promises = []
       if (Number(booksShopee.pages) > 1) {
         for (let i = 2; i < Number(booksShopee.pages) + 1; i++) {
           const offset = (i - 1) * 60
           promises.push(scrapeBooksSHOPEE(`https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=${offset}&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`))
         }
-        const values = await Promise.all(promises)
-        values.map((e) => {
-          result.push(...e.books)
-        })
       }
+
+      //城邦書局
+      const booksCite = await scrapeBooksCITE(`https://www.cite.com.tw/search_result?keywords=${keyword}`, keyword)
+
+      if (booksCite.books.length) {
+        result.push(...booksCite.books)
+      }
+
+      if (Number(booksCite.pages) > 1) {
+        for (let i = 2; i < Number(booksCite.pages) + 1; i++) {
+          promises.push(scrapeBooksCITE(`https://www.cite.com.tw/search_result?keywords=${keyword}&page=${i}`, keyword))
+        }
+      }
+
+      const values = await Promise.all(promises)
+      values.map((e) => {
+        result.push(...e.books)
+      })
 
       if (result.length) {
         await Book.bulkCreate(result, { updateOnDuplicate: ['discount', 'price'] })
