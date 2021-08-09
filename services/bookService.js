@@ -119,6 +119,25 @@ const bookService = {
     catch (err) {
       throw err
     }
+  },
+
+  updateBooks: async () => {
+    try {
+      const keywords = await Keyword.findAll({
+        attributes: ['keyword'],
+        raw: true
+      })
+
+      let promises = []
+      for (let i = 0; i < keywords.length; i++) {
+        promises.push(bookService.scrapeBooks(keywords[i]))
+      }
+      await Promise.all(promises)
+      return true
+    }
+    catch (err) {
+      throw err
+    }
   }
 }
 
