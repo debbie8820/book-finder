@@ -13,6 +13,16 @@ const bookService = {
 
   searchBooks: async (keyword, pageNum, ordering, UserId) => {
     try {
+      const keywords = keyword.split(' ')
+      let matchQuery = [] //關鍵字包含空格時，先分割並交錯排序進行比對
+
+      if (keyword.split(' ').length > 1) {
+        keywords.push(keyword)
+        matchQuery = Array.from({ length: keywords.length - 1 }).map((e, i) => ({
+          name: { [Op.regexp]: `${keywords[i]}` }
+        }))
+      }
+
       let offset = 0
       const order = require('../config/order').order(ordering)
       if (pageNum) {
@@ -21,8 +31,9 @@ const bookService = {
 
       const whereQuery = {
         [Op.or]: [
-          { name: { [Op.like]: `%${keyword}%` } },
-          { author: { [Op.like]: `%${keyword}%` } }
+          { name: { [Op.like]: `%${keywords[keywords.length - 1]}%` } },
+          { [Op.and]: matchQuery },
+          { author: { [Op.like]: `%${keywords[keywords.length - 1]}%` } }
         ]
       }
 
