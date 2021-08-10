@@ -3,7 +3,7 @@ const cheerio = require('cheerio')
 module.exports = async (URL) => {
   try {
     const books = []
-    const SHOPEE_encoded = encodeURI(URL)
+    const SHOPEE_encoded = encodeURI(URL).replace('+', '%20')
     const SHOPEE_body = await require('../utils/getUrl')(SHOPEE_encoded)
     const SHOPEE$ = JSON.parse(SHOPEE_body).items
     const pages = Math.ceil(JSON.parse(SHOPEE_body).total_count / 60)

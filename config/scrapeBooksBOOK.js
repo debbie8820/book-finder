@@ -2,7 +2,7 @@ const cheerio = require('cheerio')
 
 module.exports = async (URL, keyword) => {
   try {
-    const BOOK_encoded = encodeURI(URL)
+    const BOOK_encoded = encodeURI(URL).replace('+', '%20')
     const BOOK_body = await require('../utils/getUrl')(BOOK_encoded)
     const BOOK$ = cheerio.load(BOOK_body)
     const allTbodies = BOOK$('.table-searchlist tbody')

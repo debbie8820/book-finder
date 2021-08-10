@@ -2,7 +2,7 @@ const cheerio = require('cheerio')
 
 module.exports = async (URL, keyword) => {
   try {
-    const CITE_encoded = encodeURI(URL)
+    const CITE_encoded = encodeURI(URL).replace('+', '%20')
     const CITE_body = await require('../utils/getUrl')(CITE_encoded)
     const CITE$ = cheerio.load(CITE_body)
     const pages = CITE$('ul.page-numbers-1 li').eq(0).find('span.font-color01').eq(1).text()

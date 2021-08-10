@@ -46,7 +46,8 @@ const bookService = {
         return result
       }
 
-      const bookExists = await bookService.scrapeBooks(keyword, ordering)
+      const bookExists = await bookService.scrapeBooks(keyword)
+
       if (bookExists) {
         return bookService.searchBooks(keyword, pageNum, ordering, UserId)
       }
@@ -100,7 +101,7 @@ const bookService = {
       values.map((e) => {
         result.push(...e.books)
       })
-
+      console.log('RESULT', result)
       if (result.length) {
         await Book.bulkCreate(result, { updateOnDuplicate: ['discount', 'price'] })
         return true
