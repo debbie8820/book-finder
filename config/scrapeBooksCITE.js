@@ -2,12 +2,15 @@ const cheerio = require('cheerio')
 
 module.exports = async (URL, keyword) => {
   try {
+    const books = []
     const CITE_encoded = encodeURI(URL).replace('+', '%20')
     const CITE_body = await require('../utils/getUrl')(CITE_encoded)
     const CITE$ = cheerio.load(CITE_body)
     const pages = CITE$('ul.page-numbers-1 li').eq(0).find('span.font-color01').eq(1).text()
+    if (!pages) {
+      return { books, pages: 0 }
+    }
     const allLists = CITE$('.book-container li.book-area-1')
-    const books = []
 
     for (let i = 0; i < allLists.length; i++) {
       const allLists = CITE$('.book-container li.book-area-1')

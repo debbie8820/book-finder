@@ -65,7 +65,7 @@ const bookService = {
 
       // //博客來
       const booksBook = await scrapeBooksBOOK(`https://search.books.com.tw/search/query/cat/1/sort/1/v/0/page/1/spell/3/ms2/ms2_1/key/${keyword}`, keyword)
-
+      console.log('SERVICE', booksBook)
       if (booksBook.books.length) {
         result.push(...booksBook.books)
       }
@@ -96,12 +96,11 @@ const bookService = {
           promises.push(scrapeBooksCITE(`https://www.cite.com.tw/search_result?keywords=${keyword}&page=${i}`, keyword))
         }
       }
-
       const values = await Promise.all(promises)
       values.map((e) => {
         result.push(...e.books)
       })
-      console.log('RESULT', result)
+
       if (result.length) {
         await Book.bulkCreate(result, { updateOnDuplicate: ['discount', 'price'] })
         return true

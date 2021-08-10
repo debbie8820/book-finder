@@ -6,6 +6,9 @@ module.exports = async (URL) => {
     const SHOPEE_encoded = encodeURI(URL).replace('+', '%20')
     const SHOPEE_body = await require('../utils/getUrl')(SHOPEE_encoded)
     const SHOPEE$ = JSON.parse(SHOPEE_body).items
+    if (!SHOPEE$.length) {
+      return { books, pages: 0 }
+    }
     const pages = Math.ceil(JSON.parse(SHOPEE_body).total_count / 60)
 
     for (let i = 0; i < SHOPEE$.length; i++) {
