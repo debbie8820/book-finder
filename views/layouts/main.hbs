@@ -32,8 +32,9 @@
         <div class='d-flex ml-1'>
           {{#if isAuthenticated}}
           <form action="/logout" method="POST">
-            <button type="submit"
-              class="btn btn-dark align-middle mb-0 text-decoration-none m-0 ml-1 text-light p-0"><b>登出</b></button>
+            <button type="submit" class="btn btn-dark align-middle mb-0 text-decoration-none m-0 ml-1 text-light p-0">
+              <h6><b>登出</b></h6>
+            </button>
           </form>
           {{else}}
           <a href="/signup" class="align-middle mb-0 text-decoration-none m-0 text-light">

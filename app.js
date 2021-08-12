@@ -33,6 +33,7 @@ app.listen(port, () => {
 const job = schedule.scheduleJob('0 0 3 * * *', async () => {
   try {
     const result = await bookService.updateBooks()
+    console.log('RRRRRResult', result)
     if (result) {
       sendEmail('Database updated!')
     } else {

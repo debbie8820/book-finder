@@ -15,7 +15,10 @@ module.exports = async (URL) => {
       const name = SHOPEE$[i].item_basic.name
       const img = `https://cf.shopee.tw/file/${SHOPEE$[i].item_basic.image}`
       const price = SHOPEE$[i].item_basic.price / 100000
-      const discount = SHOPEE$[i].item_basic.discount * 10
+      let discount = SHOPEE$[i].item_basic.discount * 10
+      if (discount.toString().length > 1 && discount.toString()[1] === '0') {
+        discount = Number(discount.toString().slice(0, 1))
+      }
       const stock = SHOPEE$[i].item_basic.stock
       const author = SHOPEE$[i].item_basic.brand
       const productNumber = `${SHOPEE$[i].item_basic.shopid}.${SHOPEE$[i].item_basic.itemid}`
