@@ -6,6 +6,17 @@ module.exports = async (URL, keyword) => {
     const BOOK_encoded = encodeURI(URL).replace('+', '%20')
     const BOOK_body = await require('../utils/getUrl')(BOOK_encoded)
     const BOOK$ = cheerio.load(BOOK_body)
+    let regex = new RegExp(keyword, 'i')
+
+    if (keyword.split(' ').length > 1) { //若關鍵字中有空格，則進行切割並交錯比對
+      let regexGroup = ''
+      const splitedKeywords = keyword.split(' ')
+      for (let i = 0; i < splitedKeywords.length; i++) {
+        regexGroup += `(?=.*${splitedKeywords[i]})`
+      }
+      regex = new RegExp(regexGroup, 'i')
+    }
+
     const allTbodies = BOOK$('.table-searchlist tbody')
 
     if (!allTbodies.html()) {
@@ -14,7 +25,6 @@ module.exports = async (URL, keyword) => {
 
     for (let i = 0; i < allTbodies.length; i++) {
       const tbody = allTbodies.eq(i)
-      const regex = new RegExp(keyword, 'i')
       const name = tbody.find('td').eq(1).find('a').attr('title')
       const author = tbody.find('td').eq(2).find('.list-date li a').eq(0).attr('title')
 

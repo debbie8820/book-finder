@@ -14,7 +14,7 @@ const bookService = {
   searchBooks: async (keyword, pageNum, ordering, UserId) => {
     try {
       const keywords = keyword.split(' ')
-      let matchQuery = [] //關鍵字包含空格時，先分割並交錯排序進行比對
+      let matchQuery = [] //若關鍵字中有空格，則進行切割並交錯比對
 
       if (keyword.split(' ').length > 1) {
         keywords.push(keyword)
@@ -82,7 +82,7 @@ const bookService = {
       }
 
       //蝦皮書城
-      const booksShopee = await scrapeBooksSHOPEE(`https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=0&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`)
+      const booksShopee = await scrapeBooksSHOPEE(`https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=0&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`, keyword)
 
       if (booksShopee.books.length) {
         result.push(...booksShopee.books)
@@ -91,7 +91,7 @@ const bookService = {
       if (Number(booksShopee.pages) > 1) {
         for (let i = 2; i < Number(booksShopee.pages) + 1; i++) {
           const offset = (i - 1) * 60
-          promises.push(scrapeBooksSHOPEE(`https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=${offset}&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`))
+          promises.push(scrapeBooksSHOPEE(`https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=${offset}&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`, keyword))
         }
       }
 

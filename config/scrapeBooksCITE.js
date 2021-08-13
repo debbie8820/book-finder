@@ -12,11 +12,21 @@ module.exports = async (URL, keyword) => {
     }
     const allLists = CITE$('.book-container li.book-area-1')
 
+    let regex = new RegExp(keyword, 'i')
+
+    if (keyword.split(' ').length > 1) { //若關鍵字中有空格，則進行切割並交錯比對
+      let regexGroup = ''
+      const splitedKeywords = keyword.split(' ')
+      for (let i = 0; i < splitedKeywords.length; i++) {
+        regexGroup += `(?=.*${splitedKeywords[i]})`
+      }
+      regex = new RegExp(regexGroup, 'i')
+    }
+
     for (let i = 0; i < allLists.length; i++) {
       const allLists = CITE$('.book-container li.book-area-1')
       const name = allLists.eq(i).find('div.book-info-1 h2 a').text()
-      const regex = new RegExp(keyword, 'i') //嚴格搜尋
-      if (name.match(regex)) {
+      if (regex.test(name) || regex.test(author)) {
         const img = allLists.eq(i).find('div.book-img').children().eq(0).find('img').attr('src')
         const allPrices = allLists.eq(i).find('div.book-info-2 span.font-color01').length //區分折扣與價格
         let price
