@@ -50,8 +50,8 @@ create an .env file and set the environment variables
 ```
 //The below "to" and "from" are email addresses. When database is updated, you'll receive an email.
 
-to=SKIP 
-from=SKIP
+nodemailer_send_to=SKIP 
+nodemailer_send_from=SKIP
 ```
 
 
