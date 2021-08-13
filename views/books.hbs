@@ -6,12 +6,13 @@
     <div class="form-group mt-0 mx-2" style="width: 20vw;border:2px solid rgb(12, 158, 49);border-radius:.25rem;">
       <select name='order' class="form-control mx-1">
         <option selected disabled>排序方式</option>
-        <option {{#ifCond order "" }}selected{{/ifCond}} value="">精準度</option>
-        <option {{#ifCond order "priceD" }}selected{{/ifCond}} value="priceD">價錢(高到低)</option>
-        <option {{#ifCond order "priceA" }}selected{{/ifCond}} value="priceA">價錢(低到高)</option>
+        <option {{#ifCond order "" }}selected{{/ifCond}} value="">依精準度排序</option>
+        <option {{#ifCond order "priceD" }}selected{{/ifCond}} value="priceD">依價錢(高到低)</option>
+        <option {{#ifCond order "priceA" }}selected{{/ifCond}} value="priceA">依價錢(低到高)</option>
       </select>
     </div>
-    <button type="submit" class="btn btn-success text-white" style="height: 38px;"><b>搜尋</b></button>
+    <button type="submit" class="btn btn-success text-white" style="height: 38px;"><i
+        class="fas fa-search px-3"></i></button>
   </div>
 </form>
 
