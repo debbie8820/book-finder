@@ -1,6 +1,5 @@
 const userService = require('../services/userService')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 
 const userController = {
   getHomePage: (req, res, next) => {
@@ -45,7 +44,7 @@ const userController = {
 
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true, secure: true })
 
-      if (referer && referer !== 'undefined' && referer.slice(-7) !== '/signin') {
+      if (referer && referer !== 'undefined' && referer.slice(-7) !== '/signin' && referer.slice(-7) !== '/signup') {
         return res.redirect(referer)
       }
       return res.redirect('/')
