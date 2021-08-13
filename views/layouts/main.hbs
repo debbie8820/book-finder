@@ -20,20 +20,20 @@
       <div class="cart d-flex m-0">
         <a class="border-0 mr-3 text-decoration-none" href="/users/likes">
           <div class="d-flex" style="color:rgb(202, 68, 68);">
-            <i class="fal fa-shopping-cart fa-lg mr-2"></i>
-            <h6 class="align-bottom">{{#if user}}{{user.LikedBooks.length}}{{else}}0{{/if}}</h6>
+            <i class="fas fa-heart fa-lg mr-2 mt-1"></i>
+            <h6 class="" style="font-size: 1.2rem;">{{#if user}}{{user.LikedBooks.length}}{{else}}0{{/if}}</h6>
           </div>
         </a>
         {{#if isAuthenticated}}
         <div style="vertical-align: middle">
-          <h6 class="text-light align-middle mb-0">你好{{user.name}}，歡迎來到BookFinder!</h6>
+          <h6 class="text-light align-middle mb-0 mt-1">你好{{user.name}}，歡迎來到BookFinder!</h6>
         </div>
         {{/if}}
         <div class='d-flex ml-1'>
           {{#if isAuthenticated}}
           <form action="/logout" method="POST">
             <button type="submit" class="btn btn-dark align-middle mb-0 text-decoration-none m-0 ml-1 text-light p-0">
-              <h6><b>登出</b></h6>
+              <h6 class="mt-1"><b>登出</b></h6>
             </button>
           </form>
           {{else}}
