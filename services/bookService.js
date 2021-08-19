@@ -47,6 +47,7 @@ const bookService = {
         raw: true,
         nest: true,
         attributes: ['name', 'url', 'img', 'author', 'stock', 'StoreId', 'discount', 'price', 'author', 'id',
+          [Sequelize.literal(`(SELECT DATE_FORMAT (Book.updatedAt, '%Y.%m.%d'))`), 'updatedAt'],
           [Sequelize.literal(`(SELECT EXISTS (SELECT * FROM Likes WHERE UserId = ${UserId} AND BookId = Book.id))`), 'isLiked']
         ]
       })
