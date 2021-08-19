@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "bluebird": "^3.7.2",
     "cheerio": "^1.0.0-rc.10",
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",

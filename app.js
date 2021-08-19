@@ -41,6 +41,7 @@ const job = schedule.scheduleJob('0 45 2 * * *', async () => {
     }
   }
   catch (err) {
+    console.log(err)
     sendEmail(`Database error: ${err}`)
   }
 })

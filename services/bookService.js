@@ -5,6 +5,7 @@ const Sequelize = require('sequelize')
 const scrapeBooksCITE = require('../config/scrapeBooksCITE')
 const scrapeBooksBOOK = require('../config/scrapeBooksBOOK')
 const scrapeBooksSHOPEE = require('../config/scrapeBooksSHOPEE')
+const blueBirdPromise = require('bluebird')
 
 const bookService = {
   storeKeyword: (keyword) => {
@@ -72,7 +73,6 @@ const bookService = {
   scrapeBooks: async (keyword) => {
     try {
       const result = []
-      const promises = []
 
       // //博客來
       const booksBook = await scrapeBooksBOOK(`https://search.books.com.tw/search/query/cat/1/sort/1/v/0/page/1/spell/3/ms2/ms2_1/key/${keyword}`, keyword)
@@ -83,37 +83,50 @@ const bookService = {
 
       //蝦皮書城
       const booksShopee = await scrapeBooksSHOPEE(`https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=0&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`, keyword)
+      const shopeePage = Number(booksShopee.pages)
 
       if (booksShopee.books.length) {
         result.push(...booksShopee.books)
       }
 
-      if (Number(booksShopee.pages) > 1) {
-        for (let i = 2; i < Number(booksShopee.pages) + 1; i++) {
-          const offset = (i - 1) * 60
-          promises.push(scrapeBooksSHOPEE(`https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=${offset}&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`, keyword))
-        }
+      if (shopeePage > 1) {
+        const pageArray = Array.from({ length: shopeePage }).map((d, i) => { return i + 1 }).splice(1, shopeePage - 1)
+
+        const shopeeResult = await blueBirdPromise.map(pageArray, (item) => {
+          return scrapeBooksSHOPEE(`https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=${(item - 1) * 60}&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`, keyword)
+        }, { concurrency: 1 })
+
+        shopeeResult.map(e => {
+          if (e.books.length) {
+            result.push(...e.books)
+          }
+        })
       }
 
       //城邦書局
       const booksCite = await scrapeBooksCITE(`https://www.cite.com.tw/search_result?keywords=${keyword}`, keyword)
+      const citePage = Number(booksCite.pages)
 
       if (booksCite.books.length) {
         result.push(...booksCite.books)
       }
 
-      if (Number(booksCite.pages) > 1) {
-        for (let i = 2; i < Number(booksCite.pages) + 1; i++) {
-          promises.push(scrapeBooksCITE(`https://www.cite.com.tw/search_result?keywords=${keyword}&page=${i}`, keyword))
-        }
+      if (citePage > 1) {
+        const pageArray = Array.from({ length: citePage }).map((d, i) => { return i + 1 }).splice(1, citePage - 1)
+
+        const citeResult = await blueBirdPromise.map(pageArray, (item) => {
+          return scrapeBooksCITE(`https://www.cite.com.tw/search_result?keywords=${keyword}&page=${item}`, keyword)
+        }, { concurrency: 1 })
+
+        citeResult.map(e => {
+          if (e.books.length) {
+            result.push(...e.books)
+          }
+        })
       }
-      const values = await Promise.all(promises)
-      values.map((e) => {
-        result.push(...e.books)
-      })
 
       if (result.length) {
-        await Book.bulkCreate(result, { updateOnDuplicate: ['discount', 'price'] })
+        await Book.bulkCreate(result, { updateOnDuplicate: ['name', 'img', 'price', 'discount', 'stock', 'author', 'url', 'StoreId', 'updatedAt'] })
         return true
       }
 
@@ -152,11 +165,7 @@ const bookService = {
         raw: true
       })
 
-      let promises = []
-      for (let i = 0; i < keywords.length; i++) {
-        promises.push(bookService.scrapeBooks(keywords[i]))
-      }
-      await Promise.all(promises)
+      await blueBirdPromise.map(keywords, (item) => { return bookService.scrapeBooks(item.keyword) }, { concurrency: 1 })
       return true
     }
     catch (err) {
@@ -166,3 +175,4 @@ const bookService = {
 }
 
 module.exports = bookService
+

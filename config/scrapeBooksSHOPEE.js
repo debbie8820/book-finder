@@ -1,8 +1,8 @@
 module.exports = async (URL, keyword) => {
   try {
     const books = []
-    const SHOPEE_encoded = encodeURI(URL).replace('+', '%20')
-    const SHOPEE_body = await require('../utils/getUrl')(SHOPEE_encoded)
+    const SHOPEE_encoded = encodeURI(URL)
+    const SHOPEE_body = await require('../utils/getUrl')(SHOPEE_encoded, keyword)
     const SHOPEE$ = JSON.parse(SHOPEE_body).items
     if (!SHOPEE$.length) {
       return { books, pages: 0 }
