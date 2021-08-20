@@ -4,7 +4,7 @@
 
 This is a price comparison website for books built with Node.js and express.js.
 
-<img alt="homepage" src="https://github.com/debbie8820/book-finder/blob/master/public/img/homepage.jpg">
+<img alt="homepage" src="https://github.com/debbie8820/book-finder/blob/master/public/img/demo3.gif">
 
 The below are the scraped websites:
 <ol>
@@ -14,7 +14,7 @@ The below are the scraped websites:
 </ol>
 
 ### :fire: Features
-<img alt="search" src="https://github.com/debbie8820/book-finder/blob/master/public/img/search.jpg">
+<img alt="search" src="https://github.com/debbie8820/book-finder/blob/master/public/img/demo4.gif.jpg">
 
 + Authenticate users
 + Search and filter books
