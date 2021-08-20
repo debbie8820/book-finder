@@ -25,7 +25,7 @@ const bookService = {
       }
 
       let offset = 0
-      const order = require('../config/order').order(ordering)
+      const order = require('../config/order').order(ordering, keyword)
       if (pageNum) {
         offset = (Number(pageNum) - 1) * PAGE_LIMIT
       }
