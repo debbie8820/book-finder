@@ -48,7 +48,7 @@ create database book_finder
 4. Set up environment variables</br>
 create an .env file and set the environment variables
 ```
-//The below "to" and "from" are email addresses. When database is updated, you'll receive an email.
+//The below are email addresses for you to set up. When database is updated, you'll receive an email.
 
 nodemailer_send_to=SKIP 
 nodemailer_send_from=SKIP
