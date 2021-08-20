@@ -14,7 +14,7 @@ The below are the scraped websites:
 </ol>
 
 ### :fire: Features
-<img alt="search" src="https://github.com/debbie8820/book-finder/blob/master/public/img/demo4.gif.jpg">
+<img alt="search" src="https://github.com/debbie8820/book-finder/blob/master/public/img/demo4.gif">
 
 + Authenticate users
 + Search and filter books
