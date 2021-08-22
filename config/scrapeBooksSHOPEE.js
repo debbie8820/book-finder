@@ -4,7 +4,8 @@ module.exports = async (URL, keyword) => {
     const SHOPEE_encoded = encodeURI(URL)
     const SHOPEE_body = await require('../utils/getUrl')(SHOPEE_encoded, keyword)
     const SHOPEE$ = JSON.parse(SHOPEE_body).items
-    if (!SHOPEE$.length) {
+
+    if (!SHOPEE$) {
       return { books, pages: 0 }
     }
 

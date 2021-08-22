@@ -6,7 +6,7 @@
       <div class="d-flex justify-content-center">
         <form action="/searchBooks" class="d-flex my-2 my-lg-0">
           <input class="form-control mr-sm-1 ml-0 w-70" style="width:30vw;" name="keyword" type="text"
-            placeholder="請輸入關鍵字..." aria-label="Search">
+            placeholder="請輸入關鍵字..." aria-label="Search" required>
           <select name='order' class="form-control mr-2" style="width:13vw;">
             <option selected value="">依精準度排序</option>
             <option {{#ifCond order "priceD" }}selected{{/ifCond}} value="priceD">依價錢(高到低)</option>

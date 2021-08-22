@@ -2,6 +2,10 @@ const bookService = require('../services/bookService')
 
 const bookController = {
   storeKeyword: (req, res, next) => {
+    if (!req.query.keyword.trim()) {
+      const errors = [{ message: `請輸入關鍵字` }]
+      return res.render('books', { errors })
+    }
     bookService.storeKeyword(req.query.keyword)
     next()
   },
