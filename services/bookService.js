@@ -95,7 +95,7 @@ const bookService = {
 
         const shopeeResult = await blueBirdPromise.map(pageArray, (item) => {
           return scrapeBooksSHOPEE(`https://shopee.tw/api/v4/search/search_items?by=relevancy&keyword=${keyword}&label_ids=1000075&limit=60&newest=${(item - 1) * 60}&order=desc&page_type=search&scenario=PAGE_MICROSITE_SEARCH&skip_ads=1&version=2`, keyword)
-        }, { concurrency: 3 })
+        }, { concurrency: 1 })
 
         shopeeResult.map(e => {
           if (e.books.length) {
@@ -117,7 +117,7 @@ const bookService = {
 
         const citeResult = await blueBirdPromise.map(pageArray, (item) => {
           return scrapeBooksCITE(`https://www.cite.com.tw/search_result?keywords=${keyword}&page=${item}`, keyword)
-        }, { concurrency: 3 })
+        }, { concurrency: 1 })
 
         citeResult.map(e => {
           if (e.books.length) {

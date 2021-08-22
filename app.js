@@ -30,7 +30,7 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-const job = schedule.scheduleJob('0 0 10 * * *', async () => {
+const job = schedule.scheduleJob('0 45 2 * * *', async () => {
   try {
     const result = await bookService.updateBooks()
 
