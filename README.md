@@ -29,7 +29,7 @@ The below are the scraped websites:
 ### Getting Started
 1. Clone this repo to your desktop
 ```
-$ git clone https://github.com/debbie8820/expense-tracker.git
+$ git clone https://github.com/debbie8820/book-finder.git
 ```
 
 

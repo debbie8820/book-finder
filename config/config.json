@@ -20,5 +20,12 @@
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql"
+  },
+  "aws": {
+    "use_env_variable": "AWS_DATABASE_URL",
+    "username": "admin",
+    "password": "12345678",
+    "database": "database_aws",
+    "dialect": "mysql"
   }
 }
