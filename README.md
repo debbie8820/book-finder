@@ -1,7 +1,5 @@
 # Book-finder
 
-:point_right: [Live Demo](https://bookfinder-express.herokuapp.com/)
-
 This is a price comparison website for books built with Node.js and express.js.
 
 <img alt="homepage" src="https://github.com/debbie8820/book-finder/blob/master/public/img/demo3.gif">
