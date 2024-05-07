@@ -77,12 +77,5 @@ http://localhost:3000/
 ```
 
 
-9. You can use the following data to login
-```
-email: user1@example.com
-password: 12345678
-```
-
-
 ### Author
 Debbie Chang
